@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.db.models import Sum
 
 article = 'AR'
 news = 'NE'
@@ -16,10 +16,10 @@ class Author(models.Model):
     rating_user = models.IntegerField(default=0)
 
     def update_rating(self):
-        rating_post_author = self.post_set.all().aggregate(sum('rating_post')) * 3
-        rating_comment = self.comment_set.all.agregate(sum('rating_comment'))
-        rating_comment_post = self.post_set.comment_set.all().aggregate(sum('rating_comment'))
-        self.rating_user = rating_post_author + rating_comment + rating_comment_post
+        rating_post_author = self.post_set.all().aggregate(Sum('rating_post'))['rating_post__sum']
+        rating_comment = self.comment_set.all().aggregate(Sum('rating_comment'))['rating_comment__sum']
+        rating_comment_post = Comment.objects.filter(post__author__pk=self.pk).aggregate(Sum('rating_comment'))['rating_comment__sum']
+        self.rating_user = rating_post_author * 3 + rating_comment + rating_comment_post
         self.save()
 
 
@@ -55,7 +55,7 @@ class PostCategory(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Author, on_delete=models.CASCADE)
     text_comment = models.TextField()
     date_comment = models.DateTimeField(auto_now_add=True)
     rating_comment = models.IntegerField(default=0)
