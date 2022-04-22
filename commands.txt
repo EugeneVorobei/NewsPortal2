@@ -1,0 +1,36 @@
+>>> from News_Portal.models import *
+
+>>> User.objects.create_user('username')
+>>> User.objects.create_user('usernam1e')
+
+>>> Author.objects.create(user_id=1)
+>>> Author.objects.create(user_id=2)
+
+>>> Category.objects.create(category_name='Спорт')
+>>> Category.objects.create(category_name='Политика')
+>>> Category.objects.create(category_name='Образование')
+>>> Category.objects.create(category_name='Медицина')
+
+>>> Post.objects.create(select='news', date=0, header_post='Заголовок1', text_post='бла бла бла 1', rating_post=0, author_id=1)
+>>> Post.objects.create(select='article', date=0, header_post='Статья1', text_post='статьяяяя 1', rating_post=0, author_id=1)
+>>> Post.objects.create(select='article', date=0, header_post='Статья2', text_post='статьяяяя 2', rating_post=0, author_id=2)
+
+>>> PostCategory.objects.create(post_id=1, category_id=1)
+>>> PostCategory.objects.create(post_id=2, category_id=1)
+>>> PostCategory.objects.create(post_id=2, category_id=2)
+>>> PostCategory.objects.create(post_id=3, category_id=2)
+
+>>> Comment.objects.create(text_comment='comment1', date_comment=0, rating_comment=0, post_id=1, user_id=1)
+>>> Comment.objects.create(text_comment='comment2', date_comment=0, rating_comment=0, post_id=2, user_id=2)
+>>> Comment.objects.create(text_comment='comment3', date_comment=0, rating_comment=0, post_id=3, user_id=1)
+>>> Comment.objects.create(text_comment='comment4', date_comment=0, rating_comment=0, post_id=1, user_id=2)
+
+>>> Post.objects.get(pk=1). like ()
+>>> Post.objects.get(pk=2). like ()
+>>> Post.objects.get(pk=2). like ()
+>>> Post.objects.get(pk=3). dislike ()
+>>> Comment.objects.get(pk=1). dislike ()
+>>> Comment.objects.get(pk=2). like ()
+
+
+>>> Author.objects.get(pk=1).update_rating()
