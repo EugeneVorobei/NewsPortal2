@@ -32,5 +32,14 @@
 >>> Comment.objects.get(pk=1). dislike ()
 >>> Comment.objects.get(pk=2). like ()
 
-
 >>> Author.objects.get(pk=1).update_rating()
+>>> Author.objects.get(pk=2).update_rating()
+
+>>> Author.objects.order_by('-rating_user').values('user__username', 'rating_user')[0]
+
+>>> Post.objects.filter(select='article').order_by('-rating_post').values('date', 'author', 'rating_post', 'header_post')[0]
+>>> best_article = Post.objects.filter(select='article').order_by('-rating_post')[0]
+>>> best_article.author.user
+>>> best_article.preview()
+
+>>> Comment.objects.filter(post_id=best_article).values('date_comment', 'user__username','rating_comment', 'text_comment')
